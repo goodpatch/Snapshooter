@@ -1,0 +1,24 @@
+{
+  "name": "Snapshooter",
+  "version": "0.1.0",
+  "summary": "A short description of Snapshooter.",
+  "description": "",
+  "homepage": "https://github.com/goodpatch/Snapshooter",
+  "license": "MIT",
+  "authors": {
+    "Seiya Shimokawa": "shimokawa.1987@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/goodpatch/Snapshooter.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "requires_arc": true,
+  "source_files": "Pod/Classes/**/*",
+  "resources": [
+    "Pod/Assets/images.xcassets",
+    "Pod/Assets/*.{storyboard}"
+  ]
+}

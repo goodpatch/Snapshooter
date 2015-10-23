@@ -1,0 +1,6 @@
+framework module Snapshooter {
+  umbrella header "Snapshooter-umbrella.h"
+
+  export *
+  module * { export * }
+}
