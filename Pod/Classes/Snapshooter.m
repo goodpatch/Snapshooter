@@ -15,6 +15,7 @@
 @property (nonatomic, weak) UIWindow *window;
 @property (nonatomic) UIWindow *pkWindow;
 @property (nonatomic) NSDictionary *properties;
+@property (nonatomic) UIStatusBarStyle storedStyle;
 @end
 
 @implementation Snapshooter
@@ -142,6 +143,9 @@
     mainViewController.delegate = self;
     
     self.pkWindow.rootViewController = mainViewController;
+    
+    self.storedStyle = [UIApplication sharedApplication].statusBarStyle;
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 }
 
 #pragma mark - PKMainViewControllerDelegate
@@ -165,6 +169,7 @@
     activityViewController.completionWithItemsHandler = ^(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError) {
         if (completed) {
             [self mainViewControllerDidTouchUpLeftButton];
+            [[UIApplication sharedApplication] setStatusBarStyle:self.storedStyle animated:YES];
         }
     };
 }
