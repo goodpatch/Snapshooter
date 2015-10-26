@@ -124,11 +124,11 @@
 
     if (UIApplication.sharedApplication.keyWindow == self.pkWindow) return;
     
-    CGSize halfSize = CGSizeMake(CGRectGetWidth(self.window.bounds)/2, CGRectGetHeight(self.window.bounds)/2);
-    UIGraphicsBeginImageContextWithOptions(halfSize, NO, UIScreen.mainScreen.scale);
+    CGSize size = CGSizeMake(CGRectGetWidth(self.window.bounds), CGRectGetHeight(self.window.bounds));
+    UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
     
     for (UIWindow *window in UIApplication.sharedApplication.windows) {
-        [window drawViewHierarchyInRect:CGRectMake(0, 0, halfSize.width, halfSize.height) afterScreenUpdates:NO];
+        [window drawViewHierarchyInRect:CGRectMake(0, 0, size.width, size.height) afterScreenUpdates:NO];
     }
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
