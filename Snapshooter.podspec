@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = "Snapshooter"
   s.version          = "0.1.0"
-  s.summary          = "A short description of Snapshooter."
+  s.summary          = "Snapshooter makes it easy to share screenshots with developers and testers."
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description      = <<-DESC
+  Take a screenshot with the two-finger bottom edge swipe gesture. Also, tap to add markers anywhere on the screen.
                        DESC
 
   s.homepage         = "https://github.com/goodpatch/Snapshooter"
