@@ -50,6 +50,15 @@
         }
     }
     
+    if (self.markViews.count > 0) {
+        for (UIImageView *view in self.markViews.copy) {
+            [self animateMarkHide:view completion:^(BOOL finished) {
+                [view removeFromSuperview];
+                [self.markViews removeObject:view];
+            }];
+        }
+    }
+    
     UIImageView *mark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pk_point" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil]];
     [self addSubview:mark];
     mark.center = [recognizer locationInView:self];
