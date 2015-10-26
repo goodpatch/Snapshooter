@@ -15,7 +15,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [Snapshooter enableWithProperties:@{SnapshotterKeyShareKey:@"goodpatch/Snapshotter"}];
+    [Snapshooter enableWithProperties:@{SnapshotterKeyShareKey:@"goodpatch/Snapshooter"}];
     return YES;
 }
 
