@@ -9,7 +9,7 @@
 #import "PKViewController.h"
 
 @interface PKViewController ()
-
+@property (weak, nonatomic) IBOutlet UIButton *showAlertButton;
 @end
 
 @implementation PKViewController
@@ -27,11 +27,13 @@
 }
 
 - (IBAction)touchUpInsideButton:(UIButton *)sender {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Alert title" message:@"Alert message" preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-    }]];
-    [self presentViewController:alertController animated:YES completion:nil];
+    if (self.showAlertButton == sender) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Alert title" message:@"Alert message" preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 @end

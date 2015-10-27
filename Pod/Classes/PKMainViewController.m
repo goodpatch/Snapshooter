@@ -64,8 +64,4 @@
     [self.delegate mainViewControllerDidTouchUpRightButton];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
-}
-
 @end

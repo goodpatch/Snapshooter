@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="whP-gf-Uak">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="whP-gf-Uak">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -25,18 +25,79 @@
                                     <action selector="touchUpInsideButton:" destination="whP-gf-Uak" eventType="touchUpInside" id="bfr-jj-YDk"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwu-UD-UDP">
+                                <rect key="frame" x="258" y="331" width="84" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Show modal"/>
+                                <connections>
+                                    <segue destination="2JR-bE-N9W" kind="presentation" id="BwN-t3-dpF"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Xwu-UD-UDP" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="9je-Im-QEi"/>
                             <constraint firstItem="pwL-Vh-cit" firstAttribute="centerY" secondItem="TpU-gO-2f1" secondAttribute="centerY" id="NQ6-ld-lwa"/>
+                            <constraint firstItem="Xwu-UD-UDP" firstAttribute="top" secondItem="pwL-Vh-cit" secondAttribute="bottom" constant="16" id="PdY-Ag-ZSM"/>
                             <constraint firstItem="pwL-Vh-cit" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="sBH-n0-du0"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="showAlertButton" destination="pwL-Vh-cit" id="NlA-Kl-r3J"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="305" y="433"/>
+        </scene>
+        <!--Modal View Controller-->
+        <scene sceneID="WOr-W9-4WY">
+            <objects>
+                <viewController id="2JR-bE-N9W" customClass="PKModalViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jnc-8Q-VxS"/>
+                        <viewControllerLayoutGuide type="bottom" id="t4m-ce-r1B"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xds-8G-8mp">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mPC-ln-WBR">
+                                <rect key="frame" x="264" y="285" width="73" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Show alert"/>
+                                <connections>
+                                    <action selector="touchUpInsideButton:" destination="2JR-bE-N9W" eventType="touchUpInside" id="fey-Rr-ZXf"/>
+                                    <action selector="touchUpInsideButton:" destination="whP-gf-Uak" eventType="touchUpInside" id="igw-Op-efy"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SOy-Dc-1Ed">
+                                <rect key="frame" x="273" y="331" width="54" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Dismiss"/>
+                                <connections>
+                                    <action selector="touchUpInsideButton:" destination="2JR-bE-N9W" eventType="touchUpInside" id="IF0-Kg-6rs"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mPC-ln-WBR" firstAttribute="centerX" secondItem="xds-8G-8mp" secondAttribute="centerX" id="Lmh-dB-uji"/>
+                            <constraint firstItem="SOy-Dc-1Ed" firstAttribute="top" secondItem="mPC-ln-WBR" secondAttribute="bottom" constant="16" id="Rwb-BD-QT2"/>
+                            <constraint firstItem="SOy-Dc-1Ed" firstAttribute="centerX" secondItem="xds-8G-8mp" secondAttribute="centerX" id="fb4-3A-t7R"/>
+                            <constraint firstItem="mPC-ln-WBR" firstAttribute="centerY" secondItem="xds-8G-8mp" secondAttribute="centerY" id="xRe-eO-mLY"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dismissButton" destination="SOy-Dc-1Ed" id="eX9-iZ-nfh"/>
+                        <outlet property="showAlertButton" destination="mPC-ln-WBR" id="ZXJ-CM-hB0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IQf-As-nzp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="976" y="433"/>
         </scene>
     </scenes>
 </document>

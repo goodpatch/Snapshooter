@@ -22,7 +22,8 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		8FF4A6EB6AD8BB310A1D07B2 /* Pods_Snapshooter_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1720115FED112830541EA00A /* Pods_Snapshooter_Tests.framework */; };
-		BE1869711BDA23690032CF16 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE1869701BDA23690032CF16 /* Launch Screen.storyboard */; settings = {ASSET_TAGS = (); }; };
+		BE0B18DE1BDF0AA3009B9150 /* PKModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0B18DD1BDF0AA3009B9150 /* PKModalViewController.m */; };
+		BE1869711BDA23690032CF16 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE1869701BDA23690032CF16 /* Launch Screen.storyboard */; };
 		D16CC4FD25B4EDA2F6648EDF /* Pods_Snapshooter_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB8CD60B33700795F77224F /* Pods_Snapshooter_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,8 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8A97746D30598C49D03412E5 /* Pods-Snapshooter_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snapshooter_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Snapshooter_Tests/Pods-Snapshooter_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		BE0B18DC1BDF0AA3009B9150 /* PKModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKModalViewController.h; sourceTree = "<group>"; };
+		BE0B18DD1BDF0AA3009B9150 /* PKModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKModalViewController.m; sourceTree = "<group>"; };
 		BE1869701BDA23690032CF16 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		CBB8CD60B33700795F77224F /* Pods_Snapshooter_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snapshooter_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5F30CBD1F7B9ABA39E7D8BB /* Snapshooter.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Snapshooter.podspec; path = ../Snapshooter.podspec; sourceTree = "<group>"; };
@@ -140,6 +143,8 @@
 				6003F5A6195388D20070C39A /* PKViewController.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
+				BE0B18DC1BDF0AA3009B9150 /* PKModalViewController.h */,
+				BE0B18DD1BDF0AA3009B9150 /* PKModalViewController.m */,
 			);
 			name = "Example for Snapshooter";
 			path = Snapshooter;
@@ -398,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* PKAppDelegate.m in Sources */,
+				BE0B18DE1BDF0AA3009B9150 /* PKModalViewController.m in Sources */,
 				6003F5A7195388D20070C39A /* PKViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);

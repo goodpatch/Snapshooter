@@ -15,7 +15,6 @@
 @property (nonatomic, weak) UIWindow *window;
 @property (nonatomic) UIWindow *pkWindow;
 @property (nonatomic) NSDictionary *properties;
-@property (nonatomic) UIStatusBarStyle storedStyle;
 @end
 
 @implementation Snapshooter
@@ -113,29 +112,32 @@
 
 - (void)windowDidBecomeVisibleNotification:(NSNotification *)notification {
     UIWindow *window = (UIWindow *)notification.object;
-    if (!window || ![window isKindOfClass:UIWindow.class]) return;
+    if (!window || ![window isKindOfClass:UIWindow.class] || window == self.pkWindow) return;
 
     [self addGestureToWindow:window];
 }
 
 - (void)swipeGestureRecognized:(UISwipeGestureRecognizer *)recognizer {
-    CGPoint location = [recognizer locationInView:self.window.rootViewController.view];
-    if (location.y < CGRectGetHeight(self.window.bounds) - 64) return;
+    UIViewController *currentViewController = self.window.rootViewController;
+    while (currentViewController.presentedViewController)
+        currentViewController = currentViewController.presentedViewController;
+
+    CGPoint location = [recognizer locationInView:currentViewController.view];
+    if ((location.y + CGRectGetMinY(currentViewController.view.frame)) < (CGRectGetHeight(self.window.bounds) - 64)) return;
 
     if (UIApplication.sharedApplication.keyWindow == self.pkWindow) return;
     
     CGSize size = CGSizeMake(CGRectGetWidth(self.window.bounds), CGRectGetHeight(self.window.bounds));
     UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
-    
     for (UIWindow *window in UIApplication.sharedApplication.windows) {
-        [window drawViewHierarchyInRect:CGRectMake(0, 0, size.width, size.height) afterScreenUpdates:NO];
+        CGRect frame = self.window.rootViewController.view.frame;
+        [window drawViewHierarchyInRect:CGRectMake(0, 0, CGRectGetWidth(frame) - CGRectGetMinX(frame), CGRectGetHeight(frame) - CGRectGetMinY(frame)) afterScreenUpdates:NO];
     }
-    
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     self.pkWindow = [[UIWindow alloc] initWithFrame:self.window.bounds];
-    self.pkWindow.windowLevel = UIWindowLevelNormal;
+    self.pkWindow.windowLevel = UIWindowLevelStatusBar;
     [self.pkWindow makeKeyAndVisible];
     
     PKMainViewController *mainViewController = [UIStoryboard storyboardWithName:@"Snapshooter" bundle:[NSBundle bundleForClass:[self class]]].instantiateInitialViewController;
@@ -143,9 +145,6 @@
     mainViewController.delegate = self;
     
     self.pkWindow.rootViewController = mainViewController;
-    
-    self.storedStyle = [UIApplication sharedApplication].statusBarStyle;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 }
 
 #pragma mark - PKMainViewControllerDelegate
@@ -155,8 +154,8 @@
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         mainViewController.view.alpha = 0;
     } completion:^(BOOL finished) {
-        self.pkWindow = nil;
         [self.window makeKeyAndVisible];
+        self.pkWindow = nil;
     }];
 }
 
@@ -169,7 +168,6 @@
     activityViewController.completionWithItemsHandler = ^(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError) {
         if (completed) {
             [self mainViewControllerDidTouchUpLeftButton];
-            [[UIApplication sharedApplication] setStatusBarStyle:self.storedStyle animated:YES];
         }
     };
 }
