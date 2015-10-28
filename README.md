@@ -5,12 +5,6 @@
 [![License](https://img.shields.io/cocoapods/l/Snapshooter.svg?style=flat)](http://cocoapods.org/pods/Snapshooter)
 [![Platform](https://img.shields.io/cocoapods/p/Snapshooter.svg?style=flat)](http://cocoapods.org/pods/Snapshooter)
 
-## Usage
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Requirements
-
 ## Installation
 
 Snapshooter is available through [CocoaPods](http://cocoapods.org). To install
@@ -18,6 +12,22 @@ it, simply add the following line to your Podfile:
 
 ```ruby
 pod "Snapshooter"
+```
+
+## Usage
+
+Just invoke `[Snapshooter enableWithProperties:...]` from your AppDelegate’s `application:didFinishLaunchingWithOptions:` method. Also, implement `[Snapshooter supportedInterfaceOrientationsForWindow:...]` if your app allows landscape mode.
+
+```obj-c
+#import "Snapshooter.h"
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [Snapshooter enableWithProperties:@{}];
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return [Snapshooter supportedInterfaceOrientationsForWindow:window];
+}
 ```
 
 ## Author
