@@ -10,11 +10,14 @@
 #import "PKMainViewController.h"
 #import "PKMarkableImageView.h"
 #import <ImageIO/ImageIO.h>
+#import <MobileCoreServices/UTCoreTypes.h>
 
 @interface Snapshooter () <UIGestureRecognizerDelegate, UIActivityItemSource, PKMainViewControllerDelegate>
 @property (nonatomic, weak) UIWindow *window;
 @property (nonatomic) UIWindow *pkWindow;
 @property (nonatomic) NSDictionary *properties;
+@property (nonatomic) UIImage *shareThumbnailImage;
+@property (nonatomic) NSData *shareImageData;
 @end
 
 @implementation Snapshooter
@@ -162,6 +165,17 @@
 - (void)mainViewControllerDidTouchUpRightButton {
     PKMainViewController *mainViewController = (PKMainViewController *)self.pkWindow.rootViewController;
     
+    // create share data
+    UIImageView *imageView = mainViewController.snapshotImageView;
+    UIImage *original = imageView.image;
+    CGSize size = CGSizeMake(CGRectGetWidth(imageView.bounds), CGRectGetHeight(imageView.bounds));
+    UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
+    [imageView drawViewHierarchyInRect:CGRectMake(0, 0, size.width, size.height) afterScreenUpdates:NO];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    self.shareThumbnailImage = image;
+    self.shareImageData = UIImagePNGRepresentation(original);
+    
     NSArray *activityItems = @[self];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
     [mainViewController presentViewController:activityViewController animated:YES completion:nil];
@@ -181,26 +195,19 @@
 #pragma mark - UIActivityItemSource
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
-    return [[UIImage alloc] init];
+    return self.shareImageData;
 }
 
 - (nullable id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
-    PKMainViewController *mainViewController = (PKMainViewController *)self.pkWindow.rootViewController;
-    
-    UIImageView *imageView = mainViewController.snapshotImageView;
-    CGSize size = CGSizeMake(CGRectGetWidth(imageView.bounds)/2, CGRectGetHeight(imageView.bounds)/2);
-    UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
-  
-    [imageView drawViewHierarchyInRect:CGRectMake(0, 0, size.width, size.height) afterScreenUpdates:NO];
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
     if ([activityType isEqualToString:@"ep.com.goodpatch.goodhub2.shareExtension"]) {
-        return @{@"image":image,
-                 @"key":self.properties[SnapshotterKeyShareKey]};
+        return @{@"image":self.shareImageData,
+                 @"key":self.properties[SnapshotterKeyShareKey]? : @""};
     }
-    return image;
+    return self.shareImageData;
+}
+
+- (nullable UIImage *)activityViewController:(UIActivityViewController *)activityViewController thumbnailImageForActivityType:(nullable NSString *)activityType suggestedSize:(CGSize)size {
+    return self.shareThumbnailImage;
 }
 
 @end
