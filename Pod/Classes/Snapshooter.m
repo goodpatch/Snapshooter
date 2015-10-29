@@ -167,14 +167,19 @@
     
     // create share data
     UIImageView *imageView = mainViewController.snapshotImageView;
-    UIImage *original = imageView.image;
-    CGSize size = CGSizeMake(CGRectGetWidth(imageView.bounds), CGRectGetHeight(imageView.bounds));
-    UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
+    UIImage *image = imageView.image;
+    CGSize size = CGSizeMake(image.size.width, image.size.height);
+    UIGraphicsBeginImageContext(size);
     [imageView drawViewHierarchyInRect:CGRectMake(0, 0, size.width, size.height) afterScreenUpdates:NO];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    self.shareImageData = UIImagePNGRepresentation(UIGraphicsGetImageFromCurrentImageContext());
     UIGraphicsEndImageContext();
-    self.shareThumbnailImage = image;
-    self.shareImageData = UIImagePNGRepresentation(original);
+    
+    // create thumbnail data
+    size = CGSizeMake(CGRectGetWidth(imageView.bounds), CGRectGetHeight(imageView.bounds));
+    UIGraphicsBeginImageContext(size);
+    [imageView drawViewHierarchyInRect:CGRectMake(0, 0, size.width, size.height) afterScreenUpdates:NO];
+    self.shareThumbnailImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     
     NSArray *activityItems = @[self];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
