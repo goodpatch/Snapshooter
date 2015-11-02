@@ -18,6 +18,7 @@
 @property (nonatomic) NSDictionary *properties;
 @property (nonatomic) UIImage *shareThumbnailImage;
 @property (nonatomic) NSData *shareImageData;
+@property (nonatomic) UIInterfaceOrientation currentOrientation;
 @end
 
 @implementation Snapshooter
@@ -26,14 +27,14 @@
 
 + (void)enableWithProperties:(NSDictionary *)properties {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [Snapshooter.sharedShotter setupWindow];
-        Snapshooter.sharedShotter.properties = properties;
+        [[Snapshooter sharedShooter] setupWindow];
+        [Snapshooter sharedShooter].properties = properties;
     });
 }
 
 + (UIInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    if (UIApplication.sharedApplication.keyWindow == Snapshooter.sharedShotter.pkWindow) {
-        switch ([UIApplication sharedApplication].statusBarOrientation) {
+    if ([UIApplication sharedApplication].keyWindow == [Snapshooter sharedShooter].pkWindow) {
+        switch ([Snapshooter sharedShooter].currentOrientation) {
             case UIInterfaceOrientationPortrait:
                 return UIInterfaceOrientationMaskPortrait;
             case UIInterfaceOrientationPortraitUpsideDown:
@@ -68,7 +69,7 @@
 
 #pragma mark - private
 
-+ (instancetype)sharedShotter {
++ (instancetype)sharedShooter {
     static Snapshooter *shooter;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -79,20 +80,20 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(windowDidBecomeVisibleNotification:) name:UIWindowDidBecomeVisibleNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidBecomeKeyNotification:) name:UIWindowDidBecomeKeyNotification object:nil];
     }
     return self;
 }
 
 - (void)dealloc {
-    [NSNotificationCenter.defaultCenter removeObserver:self name:UIWindowDidBecomeVisibleNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setupWindow {
     if (self.window) return;
     
-    self.window = UIApplication.sharedApplication.keyWindow;
-    if (!self.window) self.window = UIApplication.sharedApplication.windows.lastObject;
+    self.window = [UIApplication sharedApplication].keyWindow;
+    if (!self.window) self.window = [UIApplication sharedApplication].windows.lastObject;
     if (!self.window) [[NSException exceptionWithName:NSGenericException reason:@"Snapshotter no windows" userInfo:nil] raise];
     if (!self.window.rootViewController) [[NSException exceptionWithName:NSGenericException reason:@"Snapshotter no rootViewController on the window" userInfo:nil] raise];
     
@@ -113,10 +114,11 @@
 
 #pragma mark - selector
 
-- (void)windowDidBecomeVisibleNotification:(NSNotification *)notification {
+- (void)windowDidBecomeKeyNotification:(NSNotification *)notification {
     UIWindow *window = (UIWindow *)notification.object;
     if (!window || ![window isKindOfClass:UIWindow.class] || window == self.pkWindow) return;
-
+    
+    self.window = window;
     [self addGestureToWindow:window];
 }
 
@@ -124,15 +126,16 @@
     UIViewController *currentViewController = self.window.rootViewController;
     while (currentViewController.presentedViewController)
         currentViewController = currentViewController.presentedViewController;
-
+    
     CGPoint location = [recognizer locationInView:currentViewController.view];
     if ((location.y + CGRectGetMinY(currentViewController.view.frame)) < (CGRectGetHeight(self.window.bounds) - 64)) return;
-
-    if (UIApplication.sharedApplication.keyWindow == self.pkWindow) return;
+    
+    if ([UIApplication sharedApplication].keyWindow == self.pkWindow) return;
+    self.currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     
     CGSize size = CGSizeMake(CGRectGetWidth(self.window.bounds), CGRectGetHeight(self.window.bounds));
-    UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
-    for (UIWindow *window in UIApplication.sharedApplication.windows) {
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    for (UIWindow *window in [UIApplication sharedApplication].windows) {
         CGRect frame = self.window.rootViewController.view.frame;
         [window drawViewHierarchyInRect:CGRectMake(0, 0, CGRectGetWidth(frame) - CGRectGetMinX(frame), CGRectGetHeight(frame) - CGRectGetMinY(frame)) afterScreenUpdates:NO];
     }
